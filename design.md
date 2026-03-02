@@ -1,53 +1,27 @@
 # Design
 
-## Entidades
-- Player
-- SolidTile
-- OneWayPlatform (extensible)
-- Spike
-- Saw
-- Goal
-- Ghost (replay)
+## Arquitectura
+- `game/main.py`: loop principal con timestep semi-fijo + escalado pixel-art.
+- `game/ui/scenes.py`: state machine (`MenuScene`, `LevelSelectScene`, `OptionsScene`, `LevelScene`).
+- `game/ui/hud.py`: HUD desacoplado, render estable 60fps.
+- `game/difficulty.py`: scalar por nivel + perfil de hazards.
+- `game/core/hazards.py`: RailSaw, Laser telegraph, FallingBlock warning, PatrolEnemy.
+- `game/audio.py`: AudioManager con fallback seguro.
+- `server/`: FastAPI + SQLite para `/runs` y `/leaderboard/{level_id}`.
 
-## Formato JSON de nivel
-```json
-{
-  "level_id": "level_01",
-  "width": 30,
-  "height": 16,
-  "solids": [[0,1]],
-  "one_way": [],
-  "spawn": [64, 400],
-  "goal": [860, 430, 28, 28],
-  "saws": [[300, 460, 14]],
-  "spikes": [[450, 464, 64, 16]],
-  "seed": 1001
-}
-```
+## Fixed timestep
+- Física a `1/120` (`FIXED_DT`) con acumulador y cap `MAX_ACCUMULATOR`.
+- Render a 60fps (`TARGET_FPS`) sobre surface interna `320x180`, luego upscale entero.
 
-## DB schema (runs)
-- id (PK)
-- level_id (indexed)
-- player_name
-- best_time_ms
-- deaths
-- seed
-- replay_data (zlib+base64 json)
-- created_at
+## Dificultad
+- Cada nivel define `difficulty_budget` (1..10).
+- `difficulty_scalar` escala hasta ~3x entre nivel 1 y 10.
+- Hazards leen `DifficultyProfile` para subir velocidad/frecuencia.
 
-## Replay/Ghost protocolo
-1. Captura inputs por fixed tick: left/right/jump_pressed/jump_held.
-2. Serializa como JSON compacto.
-3. Comprime con zlib level 9.
-4. Codifica base64 para transporte por API.
-5. Playback aplica frames en orden con mismo fixed timestep para mantener determinismo.
+## Replay
+- Inputs por tick (left/right/jump) -> JSON compacto -> zlib -> base64.
+- Se guarda en backend y sirve para ghost determinista local.
 
-## Timestep
-Se usa semi-fixed loop con acumulador:
-- Render variable.
-- Física fija a `1/120` para precisión.
-- `MAX_ACCUMULATOR` evita espiral de muerte.
-
-## Backend resiliente
-Si `/runs` falla, el cliente guarda en `game_local_runs.json`.
-En cada submit exitoso, intenta sincronizar pendientes.
+## Resiliencia online/offline
+- API client hace `ping /health` periódico.
+- Si `/runs` falla, guarda en `game_local_runs.json` y reintenta sync.

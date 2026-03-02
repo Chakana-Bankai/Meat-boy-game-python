@@ -1,1 +1,1 @@
-"""UI package placeholder."""
+"""UI package for scenes and HUD."""

@@ -16,6 +16,11 @@ class LevelData:
     goal: tuple[int, int, int, int]
     saws: list[tuple[int, int, int]]
     spikes: list[tuple[int, int, int, int]]
+    rails: list[dict]
+    lasers: list[dict]
+    falling_blocks: list[dict]
+    patrols: list[dict]
+    difficulty_budget: int
     seed: int
 
 
@@ -31,5 +36,10 @@ def load_level(path: Path) -> LevelData:
         goal=tuple(data["goal"]),
         saws=[tuple(s) for s in data.get("saws", [])],
         spikes=[tuple(s) for s in data.get("spikes", [])],
+        rails=data.get("rails", []),
+        lasers=data.get("lasers", []),
+        falling_blocks=data.get("falling_blocks", []),
+        patrols=data.get("patrols", []),
+        difficulty_budget=data.get("difficulty_budget", 1),
         seed=data.get("seed", 1337),
     )

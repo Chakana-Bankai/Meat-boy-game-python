@@ -1,40 +1,46 @@
 # Meat Boy Style Platformer (Python)
 
-Proyecto full-stack con cliente `pygame-ce` y backend `FastAPI` para runs/leaderboard local.
+Cliente arcade 2D (`pygame-ce`) + backend local (`FastAPI`) para runs y leaderboard.
 
 ## Requisitos
-- Python 3.12+
-- pip
+- Python 3.12+ (funciona también con 3.10+ en desarrollo)
+- `pip`
 
 ## Instalación
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Ejecutar backend
+## Ejecutar server
 ```bash
+uvicorn server.main:app --reload
+# o
 python -m server.app
 ```
-API en `http://127.0.0.1:8000`.
 
 ## Ejecutar juego
 ```bash
 python -m game.main
 ```
 
+## Controles
+- Menús: `W/S` o `↑/↓`, `Enter`, `Esc`
+- Juego: `A/D` o `←/→`, `Space`, `R` (retry), `Esc` (pause)
+- Pause: `Esc` resume, `O` options, `Q` menu
+
 ## Tests
 ```bash
 pytest -q
 ```
 
-## Build ejecutable (PyInstaller)
+## Build (PyInstaller)
 ```bash
 pyinstaller game.spec
 ```
 
-## Scripts rápidos
+## Scripts
 Unix:
 ```bash
 ./scripts/run_server.sh
@@ -47,11 +53,3 @@ scripts\run_server.bat
 scripts\run_game.bat
 scripts\test.bat
 ```
-
-## Estructura
-- `game/`: cliente pygame
-- `server/`: API FastAPI + SQLite
-- `shared/`: schemas y utilidades compartidas
-- `tests/`: unit tests
-- `design.md`: decisiones técnicas
-- `qa_checklist.md`: validación manual
