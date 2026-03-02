@@ -10,12 +10,15 @@ MAX_ACCUMULATOR = 0.25
 
 PALETTE = {
     "bg": (17, 18, 31),
+    "bg2": (24, 26, 44),
     "panel": (38, 43, 68),
     "text": (235, 238, 255),
     "accent": (109, 242, 184),
     "danger": (255, 72, 92),
     "warn": (255, 201, 92),
+    "safe": (95, 236, 112),
     "tile": (77, 87, 125),
+    "tile_shadow": (53, 61, 89),
     "player": (235, 53, 74),
     "goal": (86, 226, 107),
     "ghost": (130, 136, 248),
@@ -31,12 +34,14 @@ RUN_DECEL = 1800.0
 AIR_ACCEL = 1300.0
 JUMP_VELOCITY = -430.0
 JUMP_CUT_MULTIPLIER = 0.5
-COYOTE_TIME = 0.07
-JUMP_BUFFER_TIME = 0.09
+COYOTE_TIME = 0.065
+JUMP_BUFFER_TIME = 0.085
 WALL_SLIDE_SPEED = 130.0
 WALL_JUMP_X = 200.0
 WALL_JUMP_Y = -360.0
 PLAYER_SIZE = (12, 14)
+PLAYER_HITBOX_OFFSET = (2, 2)
+PLAYER_HITBOX_SIZE = (8, 11)
 
 # HUD / UX
 HUD_ENABLED = True
@@ -44,9 +49,13 @@ HUD_POS = (6, 6)
 SHOW_PROGRESS_BAR = True
 SCREEN_SHAKE = True
 GHOST_ENABLED = True
+DEBUG_OVERLAY_KEY = "F3"
 
 AUDIO_ENABLED = True
-DEFAULT_SFX_VOLUME = 0.5
+DEFAULT_SFX_VOLUME = 0.6
 DEFAULT_MUSIC_VOLUME = 0.25
+
+CAMERA_LEAD = 14
+CAMERA_SMOOTH = 0.1
 
 API_URL = "http://127.0.0.1:8000"

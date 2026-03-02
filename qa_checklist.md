@@ -1,11 +1,14 @@
 # QA Checklist (manual)
 - [ ] Main Menu: navegar Play / Level Select / Options / Quit con W/S + Enter.
-- [ ] Level Select: muestra best local y top 5 cuando server está online.
-- [ ] Options: ajustar volumen, toggle fullscreen, screen shake, ghost.
-- [ ] In-game HUD: tiempo mm:ss.ms, best, muertes, retries, estado pause/ghost, online/offline.
-- [ ] Pause flow: Esc pausa/reanuda, Q vuelve al menú, O abre options.
-- [ ] Retry instantáneo con R sin freeze perceptible.
-- [ ] Dificultad: del nivel 1 al 10 se siente incremento claro en hazards.
-- [ ] Hazards: rail saw, laser telegraph, falling block warning y patrol matan al contacto.
-- [ ] Offline fallback: con server apagado guarda runs en `game_local_runs.json`.
-- [ ] Sync: al volver online, envía pendientes y muestra leaderboard actualizado.
+- [ ] Options: Test SFX suena y consola muestra estado mixer/audio.
+- [ ] Opciones de volumen SFX/Music aplican inmediatamente.
+- [ ] F3 togglea debug overlay (hitboxes + estado audio/api/fps).
+- [ ] Hitbox jugador (verde) es más pequeña que sprite y se siente justa.
+- [ ] Hurt rects (rojo) y goal (amarillo) se ven correctos en debug.
+- [ ] No hay “muertes fantasma” al pasar cerca de hazards sin tocar hurt rect.
+- [ ] Lasers muestran telegraph (amarillo) antes de activarse.
+- [ ] Falling blocks vibran/avisan y luego caen; no spawnean sobre el player.
+- [ ] Completar nivel no crashea aunque server esté caído (Saved offline).
+- [ ] Leaderboard vacío/no disponible no rompe Level Complete panel.
+- [ ] Pause flow: Esc pausa/reanuda, O options, Q menú.
+- [ ] Offline fallback: crea `game_local_runs.json` y luego sincroniza al volver server.

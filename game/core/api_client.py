@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
 import httpx
 
 from shared.schemas import RunPayload
+
+LOGGER = logging.getLogger("game.api")
 
 
 class ApiClient:
@@ -20,31 +23,35 @@ class ApiClient:
 
     def ping(self) -> bool:
         try:
-            r = httpx.get(f"{self.base_url}/health", timeout=0.35)
+            r = httpx.get(f"{self.base_url}/health", timeout=0.5)
             ok = r.status_code == 200
             self._mark(ok)
             return ok
-        except Exception:
+        except Exception as exc:
+            LOGGER.debug("Ping failed: %s", exc)
             self._mark(False)
             return False
 
     def submit_run(self, payload: RunPayload) -> None:
         try:
-            r = httpx.post(f"{self.base_url}/runs", json=payload.model_dump(), timeout=1.2)
+            r = httpx.post(f"{self.base_url}/runs", json=payload.model_dump(), timeout=1.0)
             r.raise_for_status()
             self._mark(True)
             self.sync_fallback()
-        except Exception:
+        except Exception as exc:
+            LOGGER.warning("submit_run failed, storing offline: %s", exc)
             self._mark(False)
             self._append_fallback(payload.model_dump())
 
     def get_leaderboard(self, level_id: str) -> list[dict[str, Any]]:
         try:
-            r = httpx.get(f"{self.base_url}/leaderboard/{level_id}", timeout=0.8)
+            r = httpx.get(f"{self.base_url}/leaderboard/{level_id}", timeout=1.0)
             r.raise_for_status()
             self._mark(True)
-            return r.json()
-        except Exception:
+            data = r.json()
+            return data if isinstance(data, list) else []
+        except Exception as exc:
+            LOGGER.debug("leaderboard fetch failed: %s", exc)
             self._mark(False)
             return []
 
@@ -62,9 +69,10 @@ class ApiClient:
         left: list[dict[str, Any]] = []
         for run in pending:
             try:
-                r = httpx.post(f"{self.base_url}/runs", json=run, timeout=0.8)
+                r = httpx.post(f"{self.base_url}/runs", json=run, timeout=1.0)
                 r.raise_for_status()
-            except Exception:
+            except Exception as exc:
+                LOGGER.debug("sync run failed: %s", exc)
                 left.append(run)
         if left:
             self.fallback_path.write_text(json.dumps(left), encoding="utf-8")

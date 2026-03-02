@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import logging
 import time
+
 import pygame
 import pygame.freetype
 
@@ -12,8 +14,12 @@ from game.ui.scenes import GameContext, MenuScene, ProfileStore, Scene
 
 
 def run() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+
+    AudioManager.configure_pre_init()
     pygame.init()
     pygame.freetype.init()
+
     screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
     internal = pygame.Surface(config.INTERNAL_RES)
     clock = pygame.time.Clock()
@@ -23,7 +29,17 @@ def run() -> None:
     audio = AudioManager()
     audio.load()
     hud = HUDRenderer()
-    ctx = GameContext(screen=screen, internal=internal, clock=clock, font=font, api=api, audio=audio, profile=ProfileStore(), hud=hud)
+
+    ctx = GameContext(
+        screen=screen,
+        internal=internal,
+        clock=clock,
+        font=font,
+        api=api,
+        audio=audio,
+        profile=ProfileStore(),
+        hud=hud,
+    )
 
     scene: Scene = MenuScene()
     accumulator = 0.0
@@ -51,10 +67,9 @@ def run() -> None:
             ping_timer -= config.FIXED_DT
             if ping_timer <= 0:
                 ctx.api.ping()
-                ping_timer = 2.0
+                ping_timer = 1.5
 
         scene.draw(ctx)
-
         scaled = pygame.transform.scale(ctx.internal, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         ctx.screen.blit(scaled, (0, 0))
         pygame.display.flip()

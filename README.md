@@ -2,10 +2,6 @@
 
 Cliente arcade 2D (`pygame-ce`) + backend local (`FastAPI`) para runs y leaderboard.
 
-## Requisitos
-- Python 3.12+ (funciona también con 3.10+ en desarrollo)
-- `pip`
-
 ## Instalación
 ```bash
 python -m venv .venv
@@ -29,6 +25,13 @@ python -m game.main
 - Menús: `W/S` o `↑/↓`, `Enter`, `Esc`
 - Juego: `A/D` o `←/→`, `Space`, `R` (retry), `Esc` (pause)
 - Pause: `Esc` resume, `O` options, `Q` menu
+- Debug overlay: `F3`
+
+## Pruebas rápidas manuales
+1. Ir a Options -> `Test SFX` y verificar audio.
+2. Presionar `F3` y revisar hitboxes (player verde, sólidos azul, hazards rojo, goal amarillo).
+3. Apagar server, completar nivel y verificar `Saved offline`.
+4. Levantar server de nuevo y repetir completado para sincronización.
 
 ## Tests
 ```bash
@@ -38,18 +41,4 @@ pytest -q
 ## Build (PyInstaller)
 ```bash
 pyinstaller game.spec
-```
-
-## Scripts
-Unix:
-```bash
-./scripts/run_server.sh
-./scripts/run_game.sh
-./scripts/test.sh
-```
-Windows:
-```bat
-scripts\run_server.bat
-scripts\run_game.bat
-scripts\test.bat
 ```
