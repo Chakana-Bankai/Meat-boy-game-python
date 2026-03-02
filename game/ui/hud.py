@@ -9,6 +9,7 @@ from game import config
 class HUDRenderer:
     def __init__(self) -> None:
         self.font = pygame.freetype.SysFont("Consolas", 10)
+        self.cache: dict[tuple[str, tuple[int, int, int]], pygame.Surface] = {}
 
     @staticmethod
     def fmt_time(seconds: float) -> str:
@@ -16,26 +17,20 @@ class HUDRenderer:
         total = int(seconds)
         return f"{total // 60:02d}:{total % 60:02d}.{ms:02d}"
 
-    def draw(
-        self,
-        surface: pygame.Surface,
-        *,
-        current_time: float,
-        best_time_ms: int | None,
-        deaths: int,
-        attempts: int,
-        paused: bool,
-        recording_ghost: bool,
-        online: bool,
-        progress: float,
-        death_msg: str,
-        debug_lines: list[str],
-    ) -> None:
+    def _text(self, text: str, color: tuple[int, int, int]) -> pygame.Surface:
+        key = (text, color)
+        if key not in self.cache:
+            surf, _ = self.font.render(text, fgcolor=color)
+            self.cache[key] = surf.convert_alpha()
+        return self.cache[key]
+
+    def draw(self, surface: pygame.Surface, *, current_time: float, best_time_ms: int | None, deaths: int, attempts: int,
+             paused: bool, recording_ghost: bool, online: bool, progress: float, death_msg: str, debug_lines: list[str]) -> None:
         if not config.HUD_ENABLED:
             return
         x, y = config.HUD_POS
         c = config.PALETTE
-        pygame.draw.rect(surface, c["panel"], pygame.Rect(x - 2, y - 2, 170, 64))
+        pygame.draw.rect(surface, c["panel"], pygame.Rect(x - 2, y - 2, 220, 64))
         status = "Paused" if paused else ("Recording Ghost" if recording_ghost else "Playing")
         best_text = "--:--.--" if best_time_ms is None else self.fmt_time(best_time_ms / 1000)
         lines = [
@@ -45,15 +40,12 @@ class HUDRenderer:
             f"{status} | {'ONLINE' if online else 'OFFLINE'}",
         ]
         for i, line in enumerate(lines):
-            self.font.render_to(surface, (x, y + i * 12), line, c["text"])
-
+            surface.blit(self._text(line, c["text"]), (x, y + i * 12))
         if death_msg:
-            self.font.render_to(surface, (x, y + 50), death_msg, c["danger"])
-
+            surface.blit(self._text(death_msg, c["danger"]), (x + 120, y + 2))
         if config.SHOW_PROGRESS_BAR:
-            bar_y = y + 60
-            pygame.draw.rect(surface, (40, 40, 55), pygame.Rect(x, bar_y, 160, 4))
-            pygame.draw.rect(surface, c["accent"], pygame.Rect(x, bar_y, int(160 * max(0.0, min(1.0, progress))), 4))
-
+            by = y + 60
+            pygame.draw.rect(surface, (40, 40, 55), pygame.Rect(x, by, 200, 4))
+            pygame.draw.rect(surface, c["accent"], pygame.Rect(x, by, int(200 * max(0.0, min(1.0, progress))), 4))
         for i, dbg in enumerate(debug_lines):
-            self.font.render_to(surface, (5, 164 - i * 10), dbg, c["warn"])
+            surface.blit(self._text(dbg, c["warn"]), (5, config.INTERNAL_RES[1] - 12 - i * 10))

@@ -1,39 +1,43 @@
 # Meat Boy Style Platformer (Python)
 
-## Run
+## Ejecutar
 ```bash
 python -m game.main
 ```
-
-Server (optional):
+Servidor opcional:
 ```bash
 uvicorn server.main:app --reload
 ```
 
-## Controls
-- Move: A/D or Arrows
-- Jump: Space (wall slide + wall jump enabled)
-- Retry: R
-- Debug/perf overlay: F3
-- Fullscreen toggle: F11
+## Controles
+- Mover: A/D o flechas
+- Saltar: Space (coyote + buffer + wall slide/jump)
+- Reintento: R
+- Debug/Perf: F3
+- Fullscreen: F11
 
-## Viewport modes
-- Internal render: `640x360`.
-- Final output handled by `ViewportManager`:
-  - `letterbox` (default)
-  - `integer` (pixel-perfect)
-  - `stretch`
-- Toggle viewport mode from `Options`.
+## Viewport / escalado
+`ViewportManager` usa surface interna fija `640x360` y 3 modos:
+1. `letterbox` (aspect_keep_centered)
+2. `integer` (pixel-perfect)
+3. `stretch` (full)
 
-## Performance checks
-- F3 overlay shows: FPS, frame ms avg/max spikes, hazards count, network queue size, online status.
-- Networking is async worker-thread based: gameplay loop never performs blocking HTTP.
+Cambiar modo en **Options > Viewport**.
 
-## Final scene
-Complete all 10 levels to reach `FinalScene` (8-bit comedy typing sequence + return menu).
+## Pruebas pedidas
+1) **Fullscreen 1080p centrado y escalado**
+- Abrir juego, F11, alternar resize/window/fullscreen.
+- Validar centrado sin “mar vacío” desalineado.
 
-## Quick validation
-1. Resize window repeatedly and verify centered render (no top-offset shrink).
-2. Toggle F11 in 1080p and verify proper centering/scaling.
-3. Play with server off; complete level; verify no hitch + offline run queueing.
-4. Start server; verify queued runs sync and leaderboard fetch in LevelSelect.
+2) **Sin stutter**
+- F3 overlay: revisar `fps`, `frame`, `avg`, `max`.
+- Completar nivel con server offline/online y validar que no bloquea.
+
+3) **Wall jump funciona**
+- En capítulos "El Muro" (niveles 6-7), deslizar en pared y saltar con impulso lateral.
+
+4) **Niveles 1..10 distintos + lore**
+- Al iniciar cada nivel aparece lore 1.5s con capítulo/motif.
+
+5) **Final scene aparece**
+- Completar nivel 10 para abrir FinalScene (typing + cuadradito escapando).
