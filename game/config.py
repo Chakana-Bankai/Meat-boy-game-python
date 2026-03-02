@@ -1,0 +1,52 @@
+from __future__ import annotations
+
+SCREEN_WIDTH = 960
+SCREEN_HEIGHT = 540
+INTERNAL_RES = (320, 180)
+PIXEL_SCALE = 3
+TARGET_FPS = 60
+FIXED_DT = 1.0 / 120.0
+MAX_ACCUMULATOR = 0.25
+
+PALETTE = {
+    "bg": (17, 18, 31),
+    "panel": (38, 43, 68),
+    "text": (235, 238, 255),
+    "accent": (109, 242, 184),
+    "danger": (255, 72, 92),
+    "warn": (255, 201, 92),
+    "tile": (77, 87, 125),
+    "player": (235, 53, 74),
+    "goal": (86, 226, 107),
+    "ghost": (130, 136, 248),
+}
+
+TILE_SIZE = 16
+
+# Movement tuning
+GRAVITY = 2100.0
+MAX_RUN_SPEED = 180.0
+RUN_ACCEL = 2200.0
+RUN_DECEL = 1800.0
+AIR_ACCEL = 1300.0
+JUMP_VELOCITY = -430.0
+JUMP_CUT_MULTIPLIER = 0.5
+COYOTE_TIME = 0.07
+JUMP_BUFFER_TIME = 0.09
+WALL_SLIDE_SPEED = 130.0
+WALL_JUMP_X = 200.0
+WALL_JUMP_Y = -360.0
+PLAYER_SIZE = (12, 14)
+
+# HUD / UX
+HUD_ENABLED = True
+HUD_POS = (6, 6)
+SHOW_PROGRESS_BAR = True
+SCREEN_SHAKE = True
+GHOST_ENABLED = True
+
+AUDIO_ENABLED = True
+DEFAULT_SFX_VOLUME = 0.5
+DEFAULT_MUSIC_VOLUME = 0.25
+
+API_URL = "http://127.0.0.1:8000"

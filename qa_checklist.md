@@ -1,0 +1,11 @@
+# QA Checklist (manual)
+- [ ] Main Menu: navegar Play / Level Select / Options / Quit con W/S + Enter.
+- [ ] Level Select: muestra best local y top 5 cuando server está online.
+- [ ] Options: ajustar volumen, toggle fullscreen, screen shake, ghost.
+- [ ] In-game HUD: tiempo mm:ss.ms, best, muertes, retries, estado pause/ghost, online/offline.
+- [ ] Pause flow: Esc pausa/reanuda, Q vuelve al menú, O abre options.
+- [ ] Retry instantáneo con R sin freeze perceptible.
+- [ ] Dificultad: del nivel 1 al 10 se siente incremento claro en hazards.
+- [ ] Hazards: rail saw, laser telegraph, falling block warning y patrol matan al contacto.
+- [ ] Offline fallback: con server apagado guarda runs en `game_local_runs.json`.
+- [ ] Sync: al volver online, envía pendientes y muestra leaderboard actualizado.
