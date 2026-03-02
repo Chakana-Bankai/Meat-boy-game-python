@@ -1,0 +1,19 @@
+# QA Checklist
+- [ ] Boot via `python -m game.main` without errors.
+- [ ] Resize window: scene stays centered, no top/left clipping.
+- [ ] F11 enters/exits fullscreen correctly.
+- [ ] 1080p fullscreen keeps aspect in letterbox mode.
+- [ ] Integer mode keeps pixel-perfect scaling (no blur/stretch).
+- [ ] Stretch mode fills screen fully.
+- [ ] F3 shows perf overlay (fps, frame ms avg/max, hazards, queue, online).
+- [ ] No frame hitch when completing a level and submitting run.
+- [ ] No blocking/hang when server is offline.
+- [ ] Offline runs are queued and later synced when server returns.
+- [ ] LevelSelect leaderboard loads in background and UI remains responsive.
+- [ ] Wall slide activates on wall contact while falling.
+- [ ] Wall jump gives lateral impulse and does not allow infinite wall-climb exploit.
+- [ ] Levels 8-10 feel labyrinth-like with alternate route readability.
+- [ ] Difficulty from level 1 to 10 is clearly noticeable.
+- [ ] Completing level 10 opens FinalScene.
+- [ ] FinalScene typing effect + beep works; Enter returns to menu.
+- [ ] Alt-tab out/in does not break render scaling or input.
