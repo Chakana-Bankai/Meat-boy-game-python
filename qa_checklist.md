@@ -1,0 +1,12 @@
+# QA Checklist manual
+- [ ] Menú principal carga y entra al juego con Enter.
+- [ ] Movimiento: acelerar/frenar, salto corto/largo (soltar/mantener).
+- [ ] Coyote time permite salto marginal tras salir de plataforma.
+- [ ] Jump buffer ejecuta salto al caer si se presiona antes.
+- [ ] Colisiones no atraviesan tiles en ejes X/Y.
+- [ ] Trampas matan instantáneamente y respawn es inmediato.
+- [ ] Tecla R reinicia run rápido.
+- [ ] Completar nivel registra run local/remoto.
+- [ ] Sin backend activo, runs quedan en fallback JSON.
+- [ ] Con backend activo luego, fallback se sincroniza.
+- [ ] F3 activa benchmark overlay.
