@@ -30,19 +30,29 @@ def run() -> None:
 
     screen = _create_screen(config.FULLSCREEN)
     internal = pygame.Surface(config.INTERNAL_RES).convert()
-    clock = pygame.time.Clock()
-    font = pygame.freetype.SysFont("Consolas", 12)
-
     viewport = ViewportManager(config.INTERNAL_RES, config.VIEWPORT_MODE)
     viewport.recalculate(screen.get_size())
 
+    clock = pygame.time.Clock()
+    font = pygame.freetype.SysFont("Consolas", 12)
     network = NetworkClient(config.API_URL)
     audio = AudioManager()
     audio.load()
     hud = HUDRenderer()
     perf = PerfOverlay()
 
-    ctx = GameContext(screen=screen, internal=internal, clock=clock, font=font, network=network, audio=audio, profile=ProfileStore(), hud=hud, perf=perf)
+    ctx = GameContext(
+        screen=screen,
+        internal=internal,
+        clock=clock,
+        font=font,
+        network=network,
+        audio=audio,
+        profile=ProfileStore(),
+        hud=hud,
+        perf=perf,
+        viewport=viewport,
+    )
 
     scene: Scene = MenuScene()
     accumulator = 0.0
@@ -59,22 +69,21 @@ def run() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 ctx.running = False
-            elif event.type == pygame.VIDEORESIZE:
-                if not ctx.fullscreen:
-                    ctx.screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-                    viewport.recalculate((event.w, event.h))
+            elif event.type == pygame.VIDEORESIZE and not ctx.fullscreen:
+                ctx.screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                ctx.viewport.recalculate((event.w, event.h))
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 ctx.fullscreen = not ctx.fullscreen
                 ctx.screen = _create_screen(ctx.fullscreen)
-                viewport.recalculate(ctx.screen.get_size())
-            next_scene = scene.handle_event(event, ctx)
-            if next_scene:
-                scene = next_scene
+                ctx.viewport.recalculate(ctx.screen.get_size())
+            nxt = scene.handle_event(event, ctx)
+            if nxt:
+                scene = nxt
 
         while accumulator >= config.FIXED_DT:
-            next_scene = scene.update(config.FIXED_DT, ctx)
-            if next_scene:
-                scene = next_scene
+            nxt = scene.update(config.FIXED_DT, ctx)
+            if nxt:
+                scene = nxt
             accumulator -= config.FIXED_DT
             ping_timer -= config.FIXED_DT
             if ping_timer <= 0:
@@ -84,7 +93,7 @@ def run() -> None:
 
         scene.draw(ctx)
         ctx.screen.fill((0, 0, 0))
-        viewport.blit(ctx.screen, ctx.internal)
+        ctx.viewport.blit(ctx.screen, ctx.internal)
         pygame.display.flip()
         clock.tick(config.TARGET_FPS)
 
