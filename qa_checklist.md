@@ -1,0 +1,20 @@
+# QA Checklist (15+)
+- [ ] `python -m game.main` inicia sin error.
+- [ ] Ventana resize mantiene render centrado (no esquina sup izq).
+- [ ] F11 alterna fullscreen correctamente.
+- [ ] En 1080p letterbox queda centrado y proporcional.
+- [ ] `integer` mode mantiene pixel-perfect.
+- [ ] `stretch` llena toda la pantalla.
+- [ ] HUD permanece legible y consistente en cualquier modo.
+- [ ] F3 muestra FPS, frame ms, max spike, hazards y queue network.
+- [ ] Con server apagado no hay congelamiento al completar nivel.
+- [ ] Runs offline se guardan/sincronizan luego (queue baja al volver online).
+- [ ] Ghost sigue estable (sin tirones visibles).
+- [ ] Wall slide activa en pared durante caída.
+- [ ] Wall jump da impulso X/Y con control justo (sin infinite climb).
+- [ ] Jump pad impulsa “super jump” en niveles 5+.
+- [ ] Lore aparece 1.5s al inicio del nivel.
+- [ ] Capítulos/biomas se diferencian en niveles 1..10.
+- [ ] FinalScene aparece al terminar nivel 10.
+- [ ] FinalScene typing + beep y Enter vuelve al menú.
+- [ ] Alt-tab no rompe escalado ni input.
