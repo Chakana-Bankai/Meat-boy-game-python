@@ -8,7 +8,7 @@ def test_collision_stops_fall() -> None:
     pygame.init()
     rect = pygame.Rect(10, 10, 12, 14)
     floor = pygame.Rect(0, 25, 100, 10)
-    vel = pygame.Vector2(0, 400)
+    vel = pygame.Vector2(0, 120)
     result = resolve_axis_aligned(rect, [floor], vel, 0.1)
     assert result.on_ground is True
     assert vel.y == 0

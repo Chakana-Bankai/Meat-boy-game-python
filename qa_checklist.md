@@ -1,14 +1,19 @@
-# QA Checklist (manual)
-- [ ] Main Menu: navegar Play / Level Select / Options / Quit con W/S + Enter.
-- [ ] Options: Test SFX suena y consola muestra estado mixer/audio.
-- [ ] Opciones de volumen SFX/Music aplican inmediatamente.
-- [ ] F3 togglea debug overlay (hitboxes + estado audio/api/fps).
-- [ ] Hitbox jugador (verde) es más pequeña que sprite y se siente justa.
-- [ ] Hurt rects (rojo) y goal (amarillo) se ven correctos en debug.
-- [ ] No hay “muertes fantasma” al pasar cerca de hazards sin tocar hurt rect.
-- [ ] Lasers muestran telegraph (amarillo) antes de activarse.
-- [ ] Falling blocks vibran/avisan y luego caen; no spawnean sobre el player.
-- [ ] Completar nivel no crashea aunque server esté caído (Saved offline).
-- [ ] Leaderboard vacío/no disponible no rompe Level Complete panel.
-- [ ] Pause flow: Esc pausa/reanuda, O options, Q menú.
-- [ ] Offline fallback: crea `game_local_runs.json` y luego sincroniza al volver server.
+# QA Checklist
+- [ ] Boot via `python -m game.main` without errors.
+- [ ] Resize window: scene stays centered, no top/left clipping.
+- [ ] F11 enters/exits fullscreen correctly.
+- [ ] 1080p fullscreen keeps aspect in letterbox mode.
+- [ ] Integer mode keeps pixel-perfect scaling (no blur/stretch).
+- [ ] Stretch mode fills screen fully.
+- [ ] F3 shows perf overlay (fps, frame ms avg/max, hazards, queue, online).
+- [ ] No frame hitch when completing a level and submitting run.
+- [ ] No blocking/hang when server is offline.
+- [ ] Offline runs are queued and later synced when server returns.
+- [ ] LevelSelect leaderboard loads in background and UI remains responsive.
+- [ ] Wall slide activates on wall contact while falling.
+- [ ] Wall jump gives lateral impulse and does not allow infinite wall-climb exploit.
+- [ ] Levels 8-10 feel labyrinth-like with alternate route readability.
+- [ ] Difficulty from level 1 to 10 is clearly noticeable.
+- [ ] Completing level 10 opens FinalScene.
+- [ ] FinalScene typing effect + beep works; Enter returns to menu.
+- [ ] Alt-tab out/in does not break render scaling or input.

@@ -13,18 +13,15 @@ class DifficultyProfile:
 
 
 def difficulty_scalar(level_index: int, level_budget: int) -> float:
-    # Level 1..10 ramps strongly to feel ~3x harder
-    progress = max(0.0, min(1.0, level_index / 9.0))
-    budget_norm = max(0.1, min(1.0, level_budget / 10.0))
-    return 1.0 + 2.0 * (progress * 0.65 + budget_norm * 0.35)
+    return 0.9 + (level_index * 0.22) + (level_budget * 0.08)
 
 
 def build_profile(level_index: int, level_budget: int) -> DifficultyProfile:
-    scalar = difficulty_scalar(level_index, level_budget)
+    scalar = max(1.0, difficulty_scalar(level_index, level_budget))
     return DifficultyProfile(
         scalar=scalar,
-        saw_speed=0.7 * scalar,
-        laser_cycle=max(0.75, 2.2 / scalar),
-        falling_delay=max(0.25, 1.0 / scalar),
-        patrol_speed=25.0 * scalar,
+        saw_speed=0.9 * scalar,
+        laser_cycle=max(0.5, 2.0 / scalar),
+        falling_delay=max(0.2, 0.8 / scalar),
+        patrol_speed=30.0 * scalar,
     )

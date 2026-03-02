@@ -23,6 +23,7 @@ class Player:
     coyote_timer: float = 0.0
     jump_buffer_timer: float = 0.0
     was_on_ground: bool = False
+    wall_jump_lock: float = 0.0
 
     def hitbox(self) -> pygame.Rect:
         ox, oy = config.PLAYER_HITBOX_OFFSET
@@ -40,7 +41,10 @@ class Player:
         else:
             self.jump_buffer_timer = max(0.0, self.jump_buffer_timer - dt)
 
+        self.wall_jump_lock = max(0.0, self.wall_jump_lock - dt)
         axis = float(input_state.right) - float(input_state.left)
+        if self.wall_jump_lock > 0:
+            axis = 0.0
         accel = config.RUN_ACCEL if abs(axis) > 0 else config.RUN_DECEL
         if not self.was_on_ground:
             accel = config.AIR_ACCEL if abs(axis) > 0 else accel
@@ -75,6 +79,7 @@ class Player:
             if input_state.jump_pressed:
                 self.vel.x = config.WALL_JUMP_X if collision.on_wall_left else -config.WALL_JUMP_X
                 self.vel.y = config.WALL_JUMP_Y
+                self.wall_jump_lock = config.WALL_JUMP_LOCK
 
         self.was_on_ground = collision.on_ground
         return collision

@@ -1,44 +1,39 @@
 # Meat Boy Style Platformer (Python)
 
-Cliente arcade 2D (`pygame-ce`) + backend local (`FastAPI`) para runs y leaderboard.
-
-## Instalación
-```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-## Ejecutar server
-```bash
-uvicorn server.main:app --reload
-# o
-python -m server.app
-```
-
-## Ejecutar juego
+## Run
 ```bash
 python -m game.main
 ```
 
-## Controles
-- Menús: `W/S` o `↑/↓`, `Enter`, `Esc`
-- Juego: `A/D` o `←/→`, `Space`, `R` (retry), `Esc` (pause)
-- Pause: `Esc` resume, `O` options, `Q` menu
-- Debug overlay: `F3`
-
-## Pruebas rápidas manuales
-1. Ir a Options -> `Test SFX` y verificar audio.
-2. Presionar `F3` y revisar hitboxes (player verde, sólidos azul, hazards rojo, goal amarillo).
-3. Apagar server, completar nivel y verificar `Saved offline`.
-4. Levantar server de nuevo y repetir completado para sincronización.
-
-## Tests
+Server (optional):
 ```bash
-pytest -q
+uvicorn server.main:app --reload
 ```
 
-## Build (PyInstaller)
-```bash
-pyinstaller game.spec
-```
+## Controls
+- Move: A/D or Arrows
+- Jump: Space (wall slide + wall jump enabled)
+- Retry: R
+- Debug/perf overlay: F3
+- Fullscreen toggle: F11
+
+## Viewport modes
+- Internal render: `640x360`.
+- Final output handled by `ViewportManager`:
+  - `letterbox` (default)
+  - `integer` (pixel-perfect)
+  - `stretch`
+- Toggle viewport mode from `Options`.
+
+## Performance checks
+- F3 overlay shows: FPS, frame ms avg/max spikes, hazards count, network queue size, online status.
+- Networking is async worker-thread based: gameplay loop never performs blocking HTTP.
+
+## Final scene
+Complete all 10 levels to reach `FinalScene` (8-bit comedy typing sequence + return menu).
+
+## Quick validation
+1. Resize window repeatedly and verify centered render (no top-offset shrink).
+2. Toggle F11 in 1080p and verify proper centering/scaling.
+3. Play with server off; complete level; verify no hitch + offline run queueing.
+4. Start server; verify queued runs sync and leaderboard fetch in LevelSelect.
