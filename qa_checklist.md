@@ -1,0 +1,14 @@
+# QA Checklist (manual)
+- [ ] Main Menu: navegar Play / Level Select / Options / Quit con W/S + Enter.
+- [ ] Options: Test SFX suena y consola muestra estado mixer/audio.
+- [ ] Opciones de volumen SFX/Music aplican inmediatamente.
+- [ ] F3 togglea debug overlay (hitboxes + estado audio/api/fps).
+- [ ] Hitbox jugador (verde) es más pequeña que sprite y se siente justa.
+- [ ] Hurt rects (rojo) y goal (amarillo) se ven correctos en debug.
+- [ ] No hay “muertes fantasma” al pasar cerca de hazards sin tocar hurt rect.
+- [ ] Lasers muestran telegraph (amarillo) antes de activarse.
+- [ ] Falling blocks vibran/avisan y luego caen; no spawnean sobre el player.
+- [ ] Completar nivel no crashea aunque server esté caído (Saved offline).
+- [ ] Leaderboard vacío/no disponible no rompe Level Complete panel.
+- [ ] Pause flow: Esc pausa/reanuda, O options, Q menú.
+- [ ] Offline fallback: crea `game_local_runs.json` y luego sincroniza al volver server.
